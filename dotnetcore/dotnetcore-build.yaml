@@ -1,0 +1,37 @@
+parameters:
+  - name: mainbuildproject
+    displayName: Build
+    type: string
+    default: ' **/*.csproj'
+  - name: maintestproject
+    displayName: test
+    type: string
+    default: '**/*.Tests.csproj'
+  - name: runtest
+    type: object
+    default: true
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: Build the code
+    inputs:
+      command: 'build'
+      projects: '${{ parameters.mainbuildproject }}' 
+  - task: DotNetCoreCLI@2
+    displayName: test the code
+    inputs:
+      command: 'test'
+    condition: eq (${{ parameters.runtest }}, true)
+  - task: DotNetCoreCLI@2
+    displayName: publish nopCommerce
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      projects: '${{ parameters.mainbuildproject }}' 
+      arguments: '-o $(Build.ArtifactStagingDirectory)/Output'
+      zipAfterPublish: true
+      modifyOutputPath: true
+  - task: PublishBuildArtifacts@1
+    inputs:
+      downloadPath: '$(Build.ArtifactStagingDirectory)/Output'
+      artifactName: $(Build.Repository.Name)
+      
