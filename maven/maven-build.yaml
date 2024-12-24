@@ -1,4 +1,4 @@
-parameter:
+parameters:
   - name: goal
     displayName: Maven Build
     type: string
@@ -17,7 +17,7 @@ parameter:
 
 steps:
   - task : Maven@4
-    displayname: Build the code
+    displayName: Build the code
     inputs: 
       mavenPOMFile: 'pom.xml'
       goal: ${{ parameters.goal }}
@@ -26,7 +26,7 @@ steps:
       jdkVersionOption: ${{ parameters.specificversion }}
       condition: eq(' ${{ parameters.specificversion }}', ' ')
   - task : Maven@4
-    displayname: Build the code
+    displayName: Build the code
     inputs: 
       mavenPOMFile: 'pom.xml'
       goal: ${{ parameters.goal }}
