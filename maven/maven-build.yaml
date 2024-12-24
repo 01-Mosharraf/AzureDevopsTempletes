@@ -1,0 +1,47 @@
+parameter:
+  - name: goal
+    displayName: Maven Build
+    type: string
+    default: 'package'
+  - name: testResultsFile
+    displayName: Test Result
+    type: string
+    default: '**/surefire-rpots/TEST-*.xml'
+  - name: artifactpath
+    displayName: Artifact Path
+    default:  '**/*.jar'
+  - name: specificversion
+    type: string
+    default: ' '
+    displayName: Specific Version of Maven 
+
+
+
+steps:
+  - task : Maven@4
+    displayname: Build the code
+    inputs: 
+      mavenPOMFile: 'pom.xml'
+      goal: ${{ parameters.goal }}
+      publishJUnitTestResults: true
+      testResultsFile: ${{ parameters.testResultsFile }}
+      jdkVersionOption: ${{ parameters.specificversion }}
+      condition: eq(' ${{ parameters.specificversion }}', ' ')
+    
+  - task : Maven@4
+    displayname: Build the code
+    inputs: 
+      mavenPOMFile: 'pom.xml'
+      goal: ${{ parameters.goal }}
+      publishJUnitTestResults: true
+      testResultsFile: ${{ parameters.testResultsFile }}
+      condition: nq(' {{ parameters.sprcificversion }}', ' ')
+  - task: copyFile@2
+    inputs: 
+      contents: ${{ parameters.artifactpath}}
+      targetFolder: $(Build.ArtifactStagingDirectory)
+  - task: publishBuildArtifact@1
+    inputs: 
+      pathToPubish: $(Build.ArtifactStagingDirectory)
+      artifactName: $(Build.Reposatry.Name) 
+    
