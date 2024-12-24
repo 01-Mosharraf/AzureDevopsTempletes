@@ -15,8 +15,6 @@ parameter:
     default: ' '
     displayName: Specific Version of Maven 
 
-
-
 steps:
   - task : Maven@4
     displayname: Build the code
@@ -27,7 +25,6 @@ steps:
       testResultsFile: ${{ parameters.testResultsFile }}
       jdkVersionOption: ${{ parameters.specificversion }}
       condition: eq(' ${{ parameters.specificversion }}', ' ')
-    
   - task : Maven@4
     displayname: Build the code
     inputs: 
