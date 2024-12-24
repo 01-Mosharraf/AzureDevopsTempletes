@@ -15,11 +15,9 @@ parameter:
     default: ' '
     displayName: Specific Version of Maven 
 
-      
-      
 steps:
   - task : Maven@4
-    displayName: Build the code
+    displayname: Build the code
     inputs: 
       mavenPOMFile: 'pom.xml'
       goal: ${{ parameters.goal }}
@@ -28,7 +26,7 @@ steps:
       jdkVersionOption: ${{ parameters.specificversion }}
       condition: eq(' ${{ parameters.specificversion }}', ' ')
   - task : Maven@4
-    displayName: Build the code
+    displayname: Build the code
     inputs: 
       mavenPOMFile: 'pom.xml'
       goal: ${{ parameters.goal }}
