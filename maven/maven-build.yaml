@@ -1,44 +1,44 @@
 parameters:
   - name: goal
-    displayName: Maven Build
     type: string
-    default: 'package'
+    default: package
+    displayName: Maven goal to run
   - name: testResultsFiles
-    displayName: Test Result
     type: string
-    default: '**/surefire-rpots/TEST-*.xml'
+    default: '**/surefire-reports/TEST-*.xml'
+    displayName: Test results files
+  - name: specificVersion
+    type: string
+    default: ''
+    displayName: Specific version of Maven
   - name: artifactsPath
-    displayName: Artifact Path
-    default:  '**/*.jar'
-  - name: specificversion
     type: string
-    default: ' '
-    displayName: Specific Version of Maven 
-
+    default: '**/*.jar'
+    displayName: Artifacts path
 steps:
-  - task : Maven@4
-    displayName: Build the code
-    inputs: 
-      mavenPOMFile: 'pom.xml'
-      goal: ${{ parameters.goal }}
-      publishJUnitTestResults: true
+  - task: Maven@4
+    displayName: 'Maven build'
+    inputs:
+      mavenPomFile: pom.xml
+      goals: ${{ parameters.goal }}
+      publishJUnitResults: true
       testResultsFiles: ${{ parameters.testResultsFiles }}
-      jdkVersionOption: ${{ parameters.specificversion }}
-      condition: eq(' ${{ parameters.specificversion }}', ' ')
-  - task : Maven@4
-    displayName: Build the code
-    inputs: 
-      mavenPOMFile: 'pom.xml'
-      goal: ${{ parameters.goal }}
-      publishJUnitTestResults: true
+    condition: eq('${{ parameters.specificVersion }}', '')
+      
+  - task: Maven@4
+    inputs:
+      mavenPomFile: pom.xml
+      goals: ${{ parameters.goal }}
+      publishJUnitResults: true
       testResultsFiles: ${{ parameters.testResultsFiles }}
-      condition: nq(' {{ parameters.sprcificversion }}', ' ')
-  - task: copyFile@2
-    inputs: 
+      jdkVersionOption: ${{ parameters.specificVersion }}
+    condition: ne('${{ parameters.specificVersion }}', '')
+      
+  - task: CopyFiles@2
+    inputs:
       contents: ${{ parameters.artifactsPath}}
       targetFolder: $(Build.ArtifactStagingDirectory)
-  - task: publishBuildArtifact@1
-    inputs: 
-      pathToPubish: $(Build.ArtifactStagingDirectory)
-      artifactName: $(Build.Reposatry.Name) 
-    
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: $(Build.Repository.Name)
