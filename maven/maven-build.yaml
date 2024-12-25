@@ -7,7 +7,7 @@ parameters:
     displayName: Test Result
     type: string
     default: '**/surefire-rpots/TEST-*.xml'
-  - name: artifactspath
+  - name: artifactsPath
     displayName: Artifact Path
     default:  '**/*.jar'
   - name: specificversion
@@ -35,7 +35,7 @@ steps:
       condition: nq(' {{ parameters.sprcificversion }}', ' ')
   - task: copyFile@2
     inputs: 
-      contents: ${{ parameters.artifactspath}}
+      contents: ${{ parameters.artifactsPath}}
       targetFolder: $(Build.ArtifactStagingDirectory)
   - task: publishBuildArtifact@1
     inputs: 
