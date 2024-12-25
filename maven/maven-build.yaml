@@ -3,7 +3,7 @@ parameters:
     displayName: Maven Build
     type: string
     default: 'package'
-  - name: testResultsFile
+  - name: testResultsFiles
     displayName: Test Result
     type: string
     default: '**/surefire-rpots/TEST-*.xml'
@@ -22,7 +22,7 @@ steps:
       mavenPOMFile: 'pom.xml'
       goal: ${{ parameters.goal }}
       publishJUnitTestResults: true
-      testResultsFile: ${{ parameters.testResultsFile }}
+      testResultsFiles: ${{ parameters.testResultsFiles }}
       jdkVersionOption: ${{ parameters.specificversion }}
       condition: eq(' ${{ parameters.specificversion }}', ' ')
   - task : Maven@4
