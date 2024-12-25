@@ -31,7 +31,7 @@ steps:
       mavenPOMFile: 'pom.xml'
       goal: ${{ parameters.goal }}
       publishJUnitTestResults: true
-      testResultsFile: ${{ parameters.testResultsFile }}
+      testResultsFiles: ${{ parameters.testResultsFiles }}
       condition: nq(' {{ parameters.sprcificversion }}', ' ')
   - task: copyFile@2
     inputs: 
