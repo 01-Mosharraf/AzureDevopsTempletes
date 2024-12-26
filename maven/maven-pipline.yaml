@@ -1,0 +1,22 @@
+
+
+variables:
+  - group: genric_java_maven
+
+resources:
+  repositories:
+    - repository: resuabePublicAssets
+      type: github
+      name: 01-Mosharraf/AzureDevopsTempletes
+      refs: 'refs/heads/main'
+      endpoint: 'github.com_01-Mosharraf'
+
+steps:
+  - template: ./maven-build.yaml@resuabePublicAssets
+    parameters:
+      goal: $(goal)
+      specificversion: ''
+      artifactsPath: $(artifactsPath)
+      testResultsFiles: $(testResultsFiles)
+
+
