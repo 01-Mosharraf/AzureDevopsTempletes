@@ -37,8 +37,8 @@ steps:
       
   - task: CopyFiles@2
     inputs:
-      contents: '_buildOutput/**'
-      targetFolder: $(Build.Repository.LocalPath	)
+      contents: ${{ parameters.artifactsPath}}
+      targetFolder: $(Build.ArtifactStagingDirectory	)
   - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: $(Build.ArtifactStagingDirectory)
