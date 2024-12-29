@@ -41,5 +41,5 @@ steps:
       targetFolder: $(Build.Repository.LocalPath	)
   - task: PublishBuildArtifacts@1
     inputs:
-      pathToPublish: $(Build.ArtifactStagingDirectory)
+      pathToPublish: $(Build.Repository.LocalPath)
       artifactName: $(Build.Repository.Name)
